@@ -2,7 +2,7 @@ import numpy as np
 
 
 # Удаляет вершину из графа
-def RemoveNode(graph, node):
+def remove_node(graph, node):
     for current in graph[node]:
         graph[current].remove(node)
     graph[node].clear()
@@ -10,7 +10,7 @@ def RemoveNode(graph, node):
 
 # Красит вершину со степенью не меньше sqrt(n) и ее соседей,
 # а потом удаляет покрашенные вершины из графа
-def ColorAndRemove(graph, node, color_offset, colors):
+def color_and_remove(graph, node, color_offset, colors):
     colors[node] = color_offset
     color_offset += 1
 
@@ -34,13 +34,13 @@ def ColorAndRemove(graph, node, color_offset, colors):
 
     neighbours = graph[node].copy()
     for current in neighbours:
-        RemoveNode(graph, current)
+        remove_node(graph, current)
     return color_offset
 
 
 # Красит оставшуюся часть графа.
 # Степени вершин в ней меньше, чем sqrt(n)
-def ColorRemainder(graph, color_offset, colors):
+def color_remainder(graph, color_offset, colors):
     for current in range(len(graph)):
         if colors[current] == -1:
             used = set()
@@ -55,7 +55,7 @@ def ColorRemainder(graph, color_offset, colors):
 
 
 # Красит граф в O(sqrt(n)) цветов
-def ColorGraph(graph):
+def color_graph(graph):
     node_count = len(graph)
     boundary = np.sqrt(node_count)
     color_offset = 0
@@ -63,14 +63,14 @@ def ColorGraph(graph):
 
     for node in range(node_count):
         if len(graph[node]) >= boundary:
-            color_offset = ColorAndRemove(graph, node, color_offset, colors)
+            color_offset = color_and_remove(graph, node, color_offset, colors)
 
-    ColorRemainder(graph, color_offset, colors)
+    color_remainder(graph, color_offset, colors)
     return colors
 
 
 # Выводит цвет каждой вершины после раскраски
-def PrintColors(colors):
+def print_colors(colors):
     used = set()
     for i in range(len(colors)):
         used.add(colors[i])
@@ -80,7 +80,7 @@ def PrintColors(colors):
 
 
 # Считывает строку и извлекает из нее пару чисел
-def ScanPair(file):
+def scan_pair(file):
     first, second = file.readline().split()
     first = int(first)
     second = int(second)
@@ -89,19 +89,20 @@ def ScanPair(file):
 
 def main():
     input_file = open('input', 'r')
-    node_count, edge_count = ScanPair(input_file)
+    node_count, edge_count = scan_pair(input_file)
 
     graph = [[] for i in range(node_count)]
     for i in range(edge_count):
-        a, b = ScanPair(input_file)
+        a, b = scan_pair(input_file)
         a -= 1
         b -= 1
 
         graph[a].append(b)
         graph[b].append(a)
 
-    colors = ColorGraph(graph)
-    PrintColors(colors)
+    colors = color_graph(graph)
+    print_colors(colors)
 
 
-main()
+if __name__ == "__main__":
+    main()
