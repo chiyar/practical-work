@@ -125,10 +125,10 @@ class Test3Coloring:
             colors = color_graph(graph)
             assert(coloring_is_valid(graph, colors))
 
-    # def test_all_3_coloring_graphs_coloring(self):
-    #     for vertices_count in range(1, 8):
-    #         graphs = generate_all_3_coloring_graphs_with_fixed_vertices_count(vertices_count)
-    #         for graph in graphs:
-    #             colors = color_graph(graph)
-    #             assert (coloring_is_valid(graph, colors))
+    def test_all_3_coloring_graphs_coloring(self):
+        for vertices_count in range(1, 8):
+            graphs = generate_all_3_coloring_graphs_with_fixed_vertices_count(vertices_count)
+            for graph in graphs:
+                colors = color_graph(graph)
+                assert (coloring_is_valid(graph, colors))
 
