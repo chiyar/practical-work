@@ -120,8 +120,8 @@ class Test3Coloring:
         graph_variants = [[0, 1, 0], [10, 3, 0], [10, 10, 10], [20, 30, 10], [100, 1, 1], [1000, 100, 100]]
         for components_sizes in graph_variants:
             graph = generate_random_graph(components_sizes, probability)
-            if probability == 1.:
-                print(graph)
+            #if probability == 1.:
+            #    print(graph)
             colors = color_graph(graph)
             assert(coloring_is_valid(graph, colors))
 
@@ -132,3 +132,19 @@ class Test3Coloring:
                 colors = color_graph(graph)
                 assert (coloring_is_valid(graph, colors))
 
+    def test_standard_random_3_coloring_graph_coloring(self):
+        probability = 0.5
+        graph_variants = [[0, 1, 0], [10, 3, 0], [10, 10, 10], [20, 30, 10], [100, 1, 1], [1000, 100, 100]]
+        mean_count_of_colors = np.zeros(6)
+        for iter in range(50):
+            for ind, components_sizes in enumerate(graph_variants):
+                graph = generate_random_graph(components_sizes, probability)
+                colors = color_graph(graph)
+                assert(coloring_is_valid(graph, colors))
+
+                used = set()
+                for i in range(len(graph)):
+                    used.add(colors[i])
+                mean_count_of_colors[ind] += len(used)
+        mean_count_of_colors /= 50
+        print(mean_count_of_colors)
